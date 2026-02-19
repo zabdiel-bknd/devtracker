@@ -1,4 +1,4 @@
-package main
+package models
 
 import "time"
 
@@ -14,8 +14,8 @@ type Project struct {
 type Task struct {
 	ID int `json:"id"`
 	Title string `json:"title"`
-	Priority string `json:"priority"`
-	Status string `json:"status"` 			// Values: LOW, MEDIUM, HIGH
-	ProjectID string `json:"project_id"`	// Values: TODO, DOING, DONE
+	Priority string `json:"priority"`		// Values: LOW, MEDIUM, HIGH
+	Status string `json:"status"` 			// Values: TODO, DOING, DONE
+	ProjectID int `json:"project_id"`	
 	CreatedAt time.Time `json:"created_at"`
 }
