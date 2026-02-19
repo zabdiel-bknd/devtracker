@@ -47,30 +47,27 @@ func main() {
 	dbService := database.NewService(db)
 	projectHandler := handlers.NewProjectHandler(dbService)
 	taksHandler := handlers.NewTaskHandler(dbService)
-
+	dashboardHandler := handlers.NewDashboardHandler(dbService)
 
 
 	// Router
 	mux := http.NewServeMux()
 
 
-	// Health Check
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request){
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})
 
-	// Create Project
 	mux.HandleFunc("POST /projects", projectHandler.Create)
 
-	// Get project
 	mux.HandleFunc("GET /projects/{id}", projectHandler.GetById)
 
-	// Create task
 	mux.HandleFunc("POST /projects/{id}/tasks", taksHandler.Create)
 
-	// Get tasks by project
 	mux.HandleFunc("GET /projects/{id}/tasks", taksHandler.List)
+
+	mux.HandleFunc("GET /dashboard", dashboardHandler.GetStats)
 
 	addr := ":" + cfg.ServerPort
 	slog.Info("Server running on port", "db_port", cfg.ServerPort)

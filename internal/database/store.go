@@ -111,3 +111,15 @@ func (s *Service) GetTasksByProject(projectID int) ([]models.Task, error){
 
 }
 
+func (s *Service) GetProjectsCount() (int, error) {
+	var count int
+	err := s.db.QueryRow("SELECT COUNT(*) FROM projects").Scan(&count)
+	return count, err
+}
+
+func (s *Service) GetTasksCount() (int, error){
+	var count int
+	err := s.db.QueryRow("SELECT COUNT(*) FROM tasks").Scan(&count)
+	return count, err
+}
+
