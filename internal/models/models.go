@@ -19,3 +19,21 @@ type Task struct {
 	ProjectID int `json:"project_id"`	
 	CreatedAt time.Time `json:"created_at"`
 }
+
+func (task *Task) IsValid() bool {
+	if task.Title == "" {
+		return false
+	}
+
+	validPriorities := map[string]bool{"LOW": true, "MEDIUM": true, "HIGH": true}
+	if !validPriorities[task.Priority]{
+		return false
+	}
+
+	validStatuses := map[string]bool{"TODO": true, "DOING":true, "DONE": true}
+	if !validStatuses[task.Status]{
+		return false
+	}
+
+	return true
+}
