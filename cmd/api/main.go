@@ -15,6 +15,7 @@ import (
 	"github.com/zabdiel-bknd/devtracker/internal/config"
 	"github.com/zabdiel-bknd/devtracker/internal/database"
 	"github.com/zabdiel-bknd/devtracker/internal/handlers"
+	"github.com/zabdiel-bknd/devtracker/internal/middlewares"
 )
 
 func main() {
@@ -49,9 +50,11 @@ func main() {
 	taksHandler := handlers.NewTaskHandler(dbService)
 	dashboardHandler := handlers.NewDashboardHandler(dbService)
 
-
 	// Router
 	mux := http.NewServeMux()
+
+	// Middle ware
+	wrapperHandler := middlewares.RequestLogger(mux)
 
 
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request){
@@ -74,7 +77,7 @@ func main() {
 	
 	srv := &http.Server{
 		Addr:         addr,
-		Handler:      mux,
+		Handler:      wrapperHandler,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
